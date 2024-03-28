@@ -4,12 +4,13 @@ const { auth } = require("../middlware/auth.middleware");
 
 const taskRoute = express.Router();
 
-// taskRoute.use(auth)
+taskRoute.use(auth)
 
 taskRoute.get("/",async(req,res)=>{
+    const {username} = req.body
     
     try{
-        const tasks = await TaskModel.find();
+        const tasks = await TaskModel.find({username});
         res.status(200).send(tasks)
     }catch(err){
         res.status(400).send({"error":err})
@@ -17,7 +18,7 @@ taskRoute.get("/",async(req,res)=>{
 })
 
 
-taskRoute.post("/create",auth,async(req,res)=>{
+taskRoute.post("/create", async(req,res)=>{
     
     try{
         const newTask = new TaskModel(req.body);
@@ -29,15 +30,15 @@ taskRoute.post("/create",auth,async(req,res)=>{
 })
 
 
-taskRoute.patch("/update/:taskID",auth,async(req,res)=>{
+taskRoute.patch("/update/:taskID",async(req,res)=>{
     const {taskID}=req.params
   
     try{
         const task = await TaskModel.findOne({_id:taskID})
-        console.log(task)
-        console.log(task.userID);
-        console.log(req.body.userID)
-        console.log(req.body.username)
+        // console.log(task)
+        // console.log(task.userID);
+        // console.log(req.body.userID)
+        // console.log(req.body.username)
         if(req.body.userID === task.userID)
         {
             await TaskModel.findByIdAndUpdate({_id:taskID},req.body)
@@ -53,7 +54,7 @@ taskRoute.patch("/update/:taskID",auth,async(req,res)=>{
 
 
 
-taskRoute.delete("/delete/:taskID", auth ,async(req,res)=>{
+taskRoute.delete("/delete/:taskID",async(req,res)=>{
     const {taskID}=req.params
 
     try{
