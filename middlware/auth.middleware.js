@@ -13,6 +13,7 @@ const auth= async(req,res,next)=>{
                 {
                     req.body.username= decoded.username;
                     req.body.userID = decoded.userID;
+                    // console.log(req.body.username,"middleware")
                     next()
                 }else{
                     res.status(200).send({"error":err});
