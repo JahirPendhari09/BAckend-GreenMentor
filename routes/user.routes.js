@@ -48,7 +48,7 @@ userRoute.post("/login",async(req,res)=>{
                 // result == true
                 if(result)
                 {
-                    res.status(200).send({"msg":"Login successful","token":token})
+                    res.status(200).send({"msg":"Login successful","token":token,"user":user})
                 }else{
                     res.status(200).send({"msg":"Incorrect Password"})
                 }
